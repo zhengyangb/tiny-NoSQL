@@ -1,6 +1,5 @@
 import sys, os, pickle
-from collection import Collection
-# from flask import Flask, jsonify, abort
+import socket
 
 
 def parse_raw_command(raw_command):
@@ -83,58 +82,39 @@ db_operation = {
 }
 
 
-# app = Flask(__name__)
-#
-#
-# @app.route('/')
-# def index():
-#     return "Hello, World!"
-#
-# @app.route('/show_database', methods=['GET'])
-# def show_database():
-#     return jsonify(data)
-
 
 def main(argv):
     assert argv[0], 'Please specify the directory of the database'
 
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind(('localhost', 9010))
+    s.listen()
 
-    # global data
-    # if os.path.isfile(argv[0]):
-    #     data = pickle.load(open(argv[0], 'rb'))
-    #     assert type(data) is dict, 'The data file needs to be implemented with dict'
-    # else:
-    #     data = dict()
+    global data
+    if os.path.isfile(argv[0]):
+        data = pickle.load(open(argv[0], 'rb'))
+        assert type(data) is dict, 'The data file needs to be implemented with dict'
+    else:
+        data = dict()
 
-    # app.run(debug=True, port=9020)
+    while True:
+        conn, addr = s.accept()
+        try:
+            cmd, key, value = parse_raw_command(conn.recv(1024).decode())
+            # print(cmd, key, value)
+        except (AssertionError, ValueError):
+            print('Your command has wrong syntax. Please check and input again. ')
+            continue
+        if cmd in ('STOP', 'EXIT'):
+            break
+        success, rtn = db_operation[cmd](key, value)
+        if success:
+            conn.sendall(rtn)
+        conn.close()
 
-    # while True:
-    #     conn, addr = s.accept()
-    #     try:
-    #         cmd, key, value = parse_raw_command(conn.recv(1024).decode())
-    #         # print(cmd, key, value)
-    #     except (AssertionError, ValueError):
-    #         print('Your command has wrong syntax. Please check and input again. ')
-    #         continue
-    #     if cmd in ('STOP', 'EXIT'):
-    #         break
-    #     success, rtn = db_operation[cmd](key, value)
-    #     if success:
-    #         conn.sendall(rtn)
-    #     conn.close()
-
-    # pickle.dump(data, open(argv[0], 'wb'))
-    # print('Data written to {}'.format(argv[0]))
-
-    db = dict() # TODO Should be an object
-    db['main'] = {}
-    table = Collection(db['main'])
-    print(table.all())
-    print(table.insert_many([{'type': 'apple', 'price': 10},
-                             {'type': 'banana', 'price': 100, 'nutrition': {'Vitamin_C': 100, 'Cal': 10}}]))
-    print(table.insert({'type': {'_lt':1}}))
-    print(table.all())
-    print(len(table))
+    s.close()
+    pickle.dump(data, open(argv[0], 'wb'))
+    print('Data written to {}'.format(argv[0]))
 
 
 
