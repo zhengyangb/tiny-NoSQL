@@ -3,7 +3,11 @@ A Python implementation of NoSQL database
 
 
 
+# TODO
 
+-[ ] Cache
+-[ ] RESTful
+-[ ] JavaScript Module
 
 ## Reference
 

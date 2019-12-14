@@ -130,15 +130,16 @@ def main(argv):
     db['main'] = {}
     table = Collection(db['main'])
     print(table.all())
-    print(table.insert_many([{'type': 'apple', 'price': 10},
+    print(table.insert_many([{'type': 'apple', 'price': [100, 11, 12]},
                              {'type': 'banana', 'price': 100, 'nutrition': {'Vitamin_C': 100, 'Cal': 10}}]))
     print(table.insert({'type': {'_lt':1}}))
     print(table.all())
-    print(len(table))
+    print()
+    print(table.find({'price': 12}))
+    print(table.update({'price': 12}, {'_set': {'nutrition': {'Vitamin_C': 100}},
+                                       '_append': {'price': 15}}))
 
-
-
-
+    print(table.find({'nutrition.Vitamin_C': {'_gt': 99}}))
 
 
 if __name__ == '__main__':
