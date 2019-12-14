@@ -29,12 +29,16 @@ class DocOperation:
 
         if '_set' in command and check_document_valid(command['_set']):
             self.__oper_set = command['_set']
+
         if '_unset' in command and isinstance(command['_unset'], list):
             self.__oper_unset = command['_unset']
+
         if '_increment' in command and isinstance(command['_increment'], list):
             self.__oper_increment = command['_increment']
+
         if '_append' in command and isinstance(command['_append'], dict):
             self.__oper_append = command['_append']
+
         return
 
     def __call__(self, doc):

@@ -5,6 +5,7 @@ A Python implementation of NoSQL database
 
 # TODO
 
+-[x] Database and Table modules
 -[ ] Cache
 -[ ] RESTful
 -[ ] JavaScript Module

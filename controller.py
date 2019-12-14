@@ -135,9 +135,14 @@ def remove(table, query):
         return False, 'your query has wrong syntax'
 
     res_id = []
-
+    # Get doc_id of query
     for doc_id, doc in table.items():
         if query(doc_id, doc):
-            del table[doc_id]
+            res_id.append(doc_id)
+
+    # Remove documents with doc_id in res_id
+    for doc_id in res_id:
+        del table[doc_id]
+
     return True, res_id
 

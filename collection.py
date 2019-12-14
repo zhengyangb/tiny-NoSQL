@@ -7,7 +7,7 @@ import warnings
 class Collection:
 
     def __init__(self, table):
-        self.__table = table
+        self.__table = table  # Reference of original database
         return
 
     def __len__(self):
@@ -48,3 +48,7 @@ class Collection:
 
     def remove(self, query):
         success, rtn = controller.remove(self.__table, query)
+        if success:
+            return {'successful': True, 'doc_id': rtn}
+        else:
+            return {'successful': False, 'message': rtn}
