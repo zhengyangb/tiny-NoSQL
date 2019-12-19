@@ -33,7 +33,7 @@ class Collection:
     def find(self, query):
         success, rtn = controller.find(self.__table, query)
         if success:
-            return rtn[0]
+            return {'successful': True, 'results': rtn}
         else:
             return {'successful': False, 'message': rtn}
 

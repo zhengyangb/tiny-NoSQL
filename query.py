@@ -36,6 +36,8 @@ def nested_dict_write(dictionary, keys, value, create_if_not_exist=True):
 class Query:
     comparison_operations = ['_eq', '_gt', '_ge', '_lt', '_le', '_ne', '_in', '_nin']
 
+    # TODO Check type before doing operation or catch TypeError exception
+
     oper2func = dict()
     oper2func['_eq'] = lambda b: lambda x: operator.eq(x, b)
     oper2func['_lt'] = lambda b: lambda x: operator.lt(x, b)

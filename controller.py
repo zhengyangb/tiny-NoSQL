@@ -89,7 +89,7 @@ def find(table, query):
         if query(doc_id, doc):
             res_id.append(doc_id)
             res.append(doc)
-    return True, (res, res_id)
+    return True, {'doc': res, 'doc_id': res_id}
 
 
 def update(table, query, command):

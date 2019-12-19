@@ -1,7 +1,6 @@
 import sys, os
 from database import Database
-# from flask import Flask, jsonify, abort
-
+from router import make_app
 
 def parse_raw_command(raw_command):
     commands = []
@@ -83,22 +82,12 @@ db_operation = {
 }
 
 
-# app = Flask(__name__)
-#
-#
-# @app.route('/')
-# def index():
-#     return "Hello, World!"
-#
-# @app.route('/show_database', methods=['GET'])
-# def show_database():
-#     return jsonify(data)
-
 
 def main(argv):
     assert argv[0], 'Please specify the directory of the database'
-
+    global db
     db = Database(argv[0])
+    app = make_app(db)
 
     # global data
     # if os.path.isfile(argv[0]):
@@ -130,21 +119,25 @@ def main(argv):
     db.create_collection('fruits', overwrite=True)
     table = db.get_collection('fruits')
 
-    print(table.all())
-    print(table.insert_many([{'type': 'apple', 'price': [100, 11, 12]},
-                             {'type': 'banana', 'price': 100, 'nutrition': {'Vitamin_C': 100, 'Cal': 10}}]))
-    print(table.insert({'type': {'_lt':1}}))
-    print(table.all())
-    print()
-    print(table.find({'price': 12}))
-    print(table.update({'price': 12}, {'_set': {'nutrition': {'Vitamin_C': 15}},
-                                       '_append': {'price': 15}}))
+    # print(table.all())
+    # print(table.insert_many([{'type': 'apple', 'price': [100, 11, 12]},
+    #                          {'type': 'banana', 'price': 100, 'nutrition': {'Vitamin_C': 100, 'Cal': 10}}]))
+    # print(table.insert({'type': {'_lt':1}}))
+    # print(table.all())
+    # print()
+    # print(table.find({'price': 12}))
+    # print(table.update({'price': 12}, {'_set': {'nutrition': {'Vitamin_C': 15}},
+    #                                    '_append': {'price': 15}}))
+    #
+    # print(table.remove({'nutrition.Vitamin_C': {'_gt': 20}}))
+    #
+    # print(len(table))
+    # print(len(db.fruits))
+    # db.close()
+    table.insert_many([{'type': 'apple', 'price': [100, 11, 12]},
+                             {'type': 'banana', 'price': 100, 'nutrition': {'Vitamin_C': 100, 'Cal': 10}}])
+    app.run(debug=True, port=9020)
 
-    print(table.remove({'nutrition.Vitamin_C': {'_gt': 20}}))
-
-    print(len(table))
-    print(len(db.fruits))
-    db.close()
 
 
 if __name__ == '__main__':
