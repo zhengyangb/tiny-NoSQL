@@ -31,44 +31,68 @@ Start the nosql.py with corresponding argument. By default the database will run
 
 Suppose there exists a collection named `fruits`.
 
+### Insert New Documents
+
+
+<table>
+
+<tr><td>Python</td><td><code>col.insert({'type':'banana', 'price': 10})</code></td>
+</tr>
+
+<tr><td>RESTful</td><td>
+<code>curl -X "POST" "http://localhost:9020/fruits/_insert?type=banana&price=10"</code>
+</td></tr>
+
+<tr><td>RESTful (JSON)</td><td><pre><code>
+curl -X "POST" "http://localhost:9020/fruits/_insert" \
+     -H 'Content-Type: application/json' \
+     -d $'{
+  "type": "banana",
+  "price": 10
+}'
+</code></pre>
+</td>
+</tr>
+</table>
+
+Supported document types: a JSON object or Python dictionary is acceptable. The valid types include float, integer, string and nested array or object.
+
+
 ### Find all
 
-To retrieve all documents in a collection.
+To retrieve all documents in a collection. 
 
-|      |      |
-| ---- | ---- |
-|  Python |    `col.all()`  |
-|    RESTful (Parameters)|  `curl`  |
-| RESTful (JSON)  |  GET `localhost:9020/fruits/_all` ```asd```  |
+<table>
+
+<tr><td>Python</td><td><code>col.all()</code></td>
+</tr>
+
+<tr><td>RESTful</td><td>
+<code>
+curl "http://localhost:9020/fruits/_all"
+</code></td></tr>
+</table>
+
+
+
 
 
 ### Find with document ID
-
+A UUID-format document ID will be generated every time a document is inserted. The document ID will be returned after the insertion. 
 <table>
-<thead><td></td><td></td></thead>
 
 <tr><td>Python</td><td><code>col.find({'_id': DOC_ID})</code></td>
-</tr>
-
-<tr><td></td><td></td>
-</tr>
-
-<tr><td></td><td></td>
 </tr>
 
 <tr><td>RESTful</td><td>
 <code>
 curl "http://localhost:9020/fruits/DOC_ID"
-</code>
-</td>
-</tr>
+</code></td></tr>
 </table>
 
 ### Find with criterion
 
 <table>
-<thead><td></td><td></td></thead>
-
 <tr><td>Python</td><td><code>col.find({'type': 'banana'})</code></td>
 </tr>
 
