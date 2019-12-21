@@ -9,6 +9,7 @@ A Python implementation of NoSQL database
 -[ ] Cache
 -[ ] RESTful
 -[ ] JavaScript Module
+-[ ] Index
 
 ## Reference
 

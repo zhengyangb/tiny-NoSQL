@@ -13,8 +13,11 @@ class Collection:
     def __len__(self):
         return len(self.__table)
 
-    def all(self):
-        return list(self.__table.values())
+    def all(self, show_doc_id=False):
+        if show_doc_id:
+            return list(self.__table.items())
+        else:
+            return list(self.__table.values())
 
     def insert(self, doc):
         success, rtn = controller.insert(self.__table, doc)
