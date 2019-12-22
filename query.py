@@ -38,6 +38,7 @@ class Query:
 
     # TODO Check type before doing operation or catch TypeError exception
 
+
     oper2func = dict()
     oper2func['_eq'] = lambda b: lambda x: operator.eq(x, b)
     oper2func['_lt'] = lambda b: lambda x: isinstance(x, (int, float)) and isinstance(b, (int, float)) and operator.lt(x, b)
@@ -45,8 +46,8 @@ class Query:
     oper2func['_ne'] = lambda b: lambda x: operator.ne(x, b)
     oper2func['_ge'] = lambda b: lambda x: isinstance(x, (int, float)) and isinstance(b, (int, float)) and operator.ge(x, b)
     oper2func['_gt'] = lambda b: lambda x: isinstance(x, (int, float)) and isinstance(b, (int, float)) and operator.gt(x, b)
-    oper2func['_in'] = lambda b: lambda x: (isinstance(b, list) or (isinstance(b,str) and isinstance(x, str))) and operator.contains(b, x)
-    oper2func['_nin'] = lambda b: lambda x: (isinstance(b, list) or (isinstance(b,str) and isinstance(x, str))) and not operator.contains(b, x)
+    oper2func['_in'] = lambda b: lambda x: (isinstance(b, list) or (isinstance(b, str) and isinstance(x, str))) and operator.contains(b, x)
+    oper2func['_nin'] = lambda b: lambda x: (isinstance(b, list) or (isinstance(b, str) and isinstance(x, str))) and not operator.contains(b, x)
 
     def __init__(self, query):
         # Check query format
